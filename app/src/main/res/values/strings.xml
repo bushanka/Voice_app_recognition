@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Voice app</string>
+    <string name="recognize_file">Recognize File</string>
+    <string name="recognize_microphone">Включить распознавание</string>
+    <string name="stop_microphone">Остановить распознавание</string>
+    <string name="preparing">Готовим распознаватель\n</string>
+    <string name="ready">Готов\n</string>
+    <string name="failed">Не удалось %s\n</string>
+    <string name="elapsed">Result %s elapsed %d milliseconds\n</string>
+    <string name="starting">Starting\n</string>
+    <string name="say_something">Можно говорить\n</string>
+    <string name="stop_file">Stop File</string>
+    <string name="pause">Пауза</string>
+    <string name="continueRecognition">Продолжить</string>
+    <string name="form_button" />
+    <string name="first_name" />
+    <string name="second_name" />
+    <string name="first_name_text" />
+    <string name="second_name_text" />
+    <string name="last_name_text" />
+    <string name="last_name" />
+    <string name="Имя">Имя</string>
+    <string name="Фамилия">Фамилия</string>
+    <string name="Отчество">Отчество</string>
+    <string name="Назад">Назад</string>
+    <string name="create_form">Создать форму</string>
+
+</resources>
