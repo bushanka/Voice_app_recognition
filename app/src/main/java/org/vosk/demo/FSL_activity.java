@@ -1,10 +1,7 @@
 package org.vosk.demo;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
@@ -13,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDialogFragment;
@@ -33,7 +29,8 @@ import org.vosk.android.SpeechStreamService;
 import org.vosk.android.StorageService;
 
 import java.io.IOException;
-import java.util.zip.Deflater;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
@@ -60,6 +57,19 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
     public String result;
     private static DialogFragment dialog;
 
+    String up;
+    String down;
+    String left;
+    String right;
+    String choice;
+    String value;
+    String save;
+    String cancel;
+    String yes;
+    String no;
+    String print;
+
+
 
 
     @Override
@@ -67,10 +77,23 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_f_s_l);
 
+        up = getIntent().getExtras().getString("up");
+        down = getIntent().getExtras().getString("down");
+        left = getIntent().getExtras().getString("left");
+        right = getIntent().getExtras().getString("right");
+        choice = getIntent().getExtras().getString("choice");
+        value = getIntent().getExtras().getString("value");
+        save = getIntent().getExtras().getString("save");
+        cancel = getIntent().getExtras().getString("cancel");
+        yes = getIntent().getExtras().getString("yes");
+        no = getIntent().getExtras().getString("no");
+        print = getIntent().getExtras().getString("print");
+
 
         configureBackButton();
         configureTextField1();
         configureTextField2();
+
 
         setUiState(STATE_START);
         activity = this;
@@ -139,27 +162,21 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
             e.printStackTrace();
         }
         if ((result != null)) {
-            switch (result){
-                case "сохранить":
-                    voiceSave();
-                    break;
-                case "вверх":
-                    goUp(STATE_NAME);
-                    break;
-                case "вниз":
-                    goDown(STATE_NAME);
-                    break;
-                case "отменить":
-                    callAlert();
-                    break;
-            }
+            if (result.equals(save))  // СОХРАНИТЬ
+                voiceSave();
+            if (result.equals(up))  // ВВЕРХ
+                goUp(STATE_NAME);
+            if (result.equals(down))  // ВНИЗ
+                goDown(STATE_NAME);
+            if (result.equals(cancel))  // ОТМЕНА
+                callAlert();
         }
         if (STATE_NAME == 1) {
             if ((result != null)) {
                 String[] words = result.split("\\s");
                 if (words.length == 2) {
                     System.out.println(words[1]);
-                    if ("значение".equals(words[0])) {
+                    if (value.equals(words[0])) { // ЗНАЧЕНИЕ
                         fillRadio(words[1]);
                     }
                 }
@@ -170,7 +187,7 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
             if ((result != null)) {
                 String[] words = result.split("\\s");
                 if (words.length == 3) {
-                    if ("значение".equals(words[0])) {
+                    if (value.equals(words[0])) { // ЗНАЧЕНИЕ
                         fillCheck(words[1], words[2]);
                     }
                 }
@@ -179,14 +196,14 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
         }
         if (STATE_NAME == 4) {
             if ((result != null)) {
-                if (result.equals("да")){
+                if (result.equals(yes)){ //ДА
                     voiceExit();
                 }
             }
         }
         if (STATE_NAME == 4) {
             if ((result != null)) {
-                if (result.equals("нет")){
+                if (result.equals(no)){   //НЕТ
                     voiceBackToForm();
                 }
             }
@@ -240,28 +257,28 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
             case "один":
                 System.out.println(1);
                 CheckBox c = findViewById(R.id.checkBox);
-                if (answer.equals("да")) {
+                if (answer.equals(yes)) {     //ДА
                     c.setChecked(true);
                 }
-                else if (answer.equals("нет")){
+                else if (answer.equals(no)){  //НЕТ
                     c.setChecked(false);
                 }
                 break;
             case "два":
                 CheckBox c2 = findViewById(R.id.checkBox2);
-                if (answer.equals("да")) {
+                if (answer.equals(yes)) {   //ДА
                     c2.setChecked(true);
                 }
-                else if (answer.equals("нет")){
+                else if (answer.equals(no)){   //НЕТ
                     c2.setChecked(false);
                 }
                 break;
             case "три":
                 CheckBox c3 = findViewById(R.id.checkBox3);
-                if (answer.equals("да")) {
+                if (answer.equals(yes)) {  //ДА
                     c3.setChecked(true);
                 }
-                else if (answer.equals("нет")){
+                else if (answer.equals(no)){  //НЕТ
                     c3.setChecked(false);
                 }
                 break;

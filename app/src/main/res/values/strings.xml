@@ -32,5 +32,10 @@
     <string name="checkbox">CheckBox</string>
     <string name="checkbox2">CheckBox</string>
     <string name="checkbox3">CheckBox</string>
+    <string name="up_name">вверх</string>
+    <string name="up_field"/>
+    <string name="voice_command_general">Голосовая команда</string>
+    <string name="command_general">Команда</string>
+
 
 </resources>

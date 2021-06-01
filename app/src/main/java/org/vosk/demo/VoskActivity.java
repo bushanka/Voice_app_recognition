@@ -26,6 +26,8 @@ import org.vosk.android.SpeechStreamService;
 import org.vosk.android.StorageService;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class VoskActivity extends Activity implements
         RecognitionListener {
@@ -44,13 +46,70 @@ public class VoskActivity extends Activity implements
     private SpeechStreamService speechStreamService;
     public String result;
 
+    String up;
+    String down;
+    String left;
+    String right;
+    String choice;
+    String value;
+    String save;
+    String cancel;
+    String yes;
+    String no;
+    String print;
+
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.main);
 
+        up = getIntent().getExtras().getString("up");
+        down = getIntent().getExtras().getString("down");
+        left = getIntent().getExtras().getString("left");
+        right = getIntent().getExtras().getString("right");
+        choice = getIntent().getExtras().getString("choice");
+        value = getIntent().getExtras().getString("value");
+        save = getIntent().getExtras().getString("save");
+        cancel = getIntent().getExtras().getString("cancel");
+        yes = getIntent().getExtras().getString("yes");
+        no = getIntent().getExtras().getString("no");
+        print = getIntent().getExtras().getString("print");
+
+        if (up.length() == 0 | down.length() == 0){
+            up = "вверх";
+            down = "вниз";
+            left = "влево";
+            right = "вправо";
+            choice = "выбор";
+            value = "значение";
+            save = "сохранить";
+            cancel = "отменить";
+            yes = "да";
+            no = "нет";
+            print = "печать";
+
+        }
+
+//        Команды навигации по формам:
+//                - Вверх
+//                - Вниз
+//                - Влево
+//                - Вправо
+//                - Выбор
+//                - Значение
+//
+//        Общие команды:
+//                - Сохранить
+//                - Отменить
+//                - Да
+//                - Нет
+//                - Печать
+
+
         configureFormOneButton();
         createFormOne();
+        createFormTwo();
+        configureSettings();
 
         // Setup layout
         // Setup layout
@@ -206,10 +265,28 @@ public class VoskActivity extends Activity implements
         formOneButton.setOnClickListener(view -> startActivity(new Intent(VoskActivity.this, FSL_activity.class)));
     }
 
+    private void configureSettings(){
+        Button settingsBtn = findViewById(R.id.settings);
+        settingsBtn.setOnClickListener(view -> startActivity(new Intent(VoskActivity.this, Settings.class)));
+    }
+
     private void createFormOne() {
         if ((result != null))
             if (result.equals("форма один")) {
-                startActivity(new Intent(VoskActivity.this, FSL_activity.class));
+                Intent intent = new Intent(VoskActivity.this, FSL_activity.class);
+                intent.putExtra("up", up);
+                intent.putExtra("down", down);
+                intent.putExtra("left", left);
+                intent.putExtra("right", right);
+                intent.putExtra("choice", choice);
+                intent.putExtra("yes", yes);
+                intent.putExtra("no", no);
+                intent.putExtra("print", print);
+                intent.putExtra("save", save);
+                intent.putExtra("value", value);
+                intent.putExtra("cancel", cancel);
+                startActivity(intent);
+
 //                setUiState(STATE_DONE);
 //                speechService.stop();
 //                speechService = null;
@@ -219,9 +296,20 @@ public class VoskActivity extends Activity implements
 
     private void createFormTwo() {
         if ((result != null))
-            if (result.equals("форма один")) {
-                startActivity(new Intent(VoskActivity.this, FSL_activity.class));
-//                pause(true);
+            if (result.equals("форма два")) {
+                Intent intent = new Intent(VoskActivity.this, FSL_activity.class);
+                intent.putExtra("up", up);
+                intent.putExtra("down", down);
+                intent.putExtra("left", left);
+                intent.putExtra("right", right);
+                intent.putExtra("choice", choice);
+                intent.putExtra("yes", yes);
+                intent.putExtra("no", no);
+                intent.putExtra("print", print);
+                intent.putExtra("save", save);
+                intent.putExtra("value", value);
+                intent.putExtra("cancel", cancel);
+                startActivity(intent);
             }
     }
 
