@@ -6,24 +6,24 @@
     android:padding="16dp">
 
     <Button
-        android:id="@+id/recognize_mic"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/recognize_microphone"/>
-
-    <TextView
-        android:id="@+id/result_text"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="bottom"
-        android:scrollbars="vertical"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <Button
         android:id="@+id/createFormOne"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="90dp"
+        android:text="@string/create_form_one" />
+
+    <Button
+        android:id="@+id/createFormTwo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/create_form_two" />
+
+    <Button
+        android:id="@+id/settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="230dp"
-        android:text="@string/create_form" />
+        android:text="@string/settings" />
 
 </LinearLayout>

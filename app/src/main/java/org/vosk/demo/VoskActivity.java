@@ -1,17 +1,3 @@
-// Copyright 2019 Alpha Cephei Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package org.vosk.demo;
 
 import android.Manifest;
@@ -56,7 +42,6 @@ public class VoskActivity extends Activity implements
     private Model model;
     private SpeechService speechService;
     private SpeechStreamService speechStreamService;
-    private TextView resultView;
     public String result;
 
     @Override
@@ -68,10 +53,10 @@ public class VoskActivity extends Activity implements
         createFormOne();
 
         // Setup layout
-        resultView = findViewById(R.id.result_text);
+        // Setup layout
         setUiState(STATE_START);
 
-        findViewById(R.id.recognize_mic).setOnClickListener(view -> recognizeMicrophone());
+//        findViewById(R.id.recognize_mic).setOnClickListener(view -> recognizeMicrophone());
 //        recognizeMicrophone();
 //        ((ToggleButton) findViewById(R.id.pause)).setOnCheckedChangeListener((view, isChecked) -> pause(isChecked));
 
@@ -164,25 +149,28 @@ public class VoskActivity extends Activity implements
     private void setUiState(int state) {
         switch (state) {
             case STATE_START:
-                resultView.setText(R.string.preparing);
-                resultView.setMovementMethod(new ScrollingMovementMethod());
-                findViewById(R.id.recognize_mic).setEnabled(false);
+//                pause(false);
+//                resultView.setText(R.string.preparing);
+//                resultView.setMovementMethod(new ScrollingMovementMethod());
+//                findViewById(R.id.recognize_mic).setEnabled(false);
 //                findViewById(R.id.pause).setEnabled((false));
                 break;
             case STATE_READY:
-                resultView.setText(R.string.ready);
-                ((Button) findViewById(R.id.recognize_mic)).setText(R.string.recognize_microphone);
-                findViewById(R.id.recognize_mic).setEnabled(true);
+                recognizeMicrophone();
+//                pause(false);
+//                resultView.setText(R.string.ready);
+//                ((Button) findViewById(R.id.recognize_mic)).setText(R.string.recognize_microphone);
+//                findViewById(R.id.recognize_mic).setEnabled(true);
 //                findViewById(R.id.pause).setEnabled((false));
                 break;
             case STATE_DONE:
-                ((Button) findViewById(R.id.recognize_mic)).setText(R.string.recognize_microphone);
-                findViewById(R.id.recognize_mic).setEnabled(true);
+//                ((Button) findViewById(R.id.recognize_mic)).setText(R.string.recognize_microphone);
+//                findViewById(R.id.recognize_mic).setEnabled(true);
 //                findViewById(R.id.pause).setEnabled((false));
                 break;
             case STATE_MIC:
-                ((Button) findViewById(R.id.recognize_mic)).setText(R.string.stop_microphone);
-                findViewById(R.id.recognize_mic).setEnabled(true);
+//                ((Button) findViewById(R.id.recognize_mic)).setText(R.string.stop_microphone);
+//                findViewById(R.id.recognize_mic).setEnabled(true);
 //                findViewById(R.id.pause).setEnabled((true));
                 break;
             default:
@@ -191,9 +179,6 @@ public class VoskActivity extends Activity implements
     }
 
     private void setErrorState(String message) {
-        resultView.setText(message);
-        ((Button) findViewById(R.id.recognize_mic)).setText(R.string.recognize_microphone);
-        findViewById(R.id.recognize_mic).setEnabled(false);
     }
 
 
@@ -215,6 +200,7 @@ public class VoskActivity extends Activity implements
     }
 
 
+
     private void configureFormOneButton() {
         Button formOneButton = findViewById(R.id.createFormOne);
         formOneButton.setOnClickListener(view -> startActivity(new Intent(VoskActivity.this, FSL_activity.class)));
@@ -222,12 +208,27 @@ public class VoskActivity extends Activity implements
 
     private void createFormOne() {
         if ((result != null))
-            if (result.equals("создать форму")) {
+            if (result.equals("форма один")) {
                 startActivity(new Intent(VoskActivity.this, FSL_activity.class));
-                setUiState(STATE_DONE);
-                speechService.stop();
-                speechService = null;
+//                setUiState(STATE_DONE);
+//                speechService.stop();
+//                speechService = null;
+//                pause(true);
             }
+    }
+
+    private void createFormTwo() {
+        if ((result != null))
+            if (result.equals("форма один")) {
+                startActivity(new Intent(VoskActivity.this, FSL_activity.class));
+//                pause(true);
+            }
+    }
+
+    private void pause(boolean checked) {
+        if (speechService != null) {
+            speechService.setPause(checked);
+        }
     }
 
 }

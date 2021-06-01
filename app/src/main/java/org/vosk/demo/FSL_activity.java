@@ -1,18 +1,22 @@
 package org.vosk.demo;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
 import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
-import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.RadioButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -29,8 +33,11 @@ import org.vosk.android.SpeechStreamService;
 import org.vosk.android.StorageService;
 
 import java.io.IOException;
-import androidx.appcompat.app.AppCompatActivity;
+import java.util.zip.Deflater;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
 
 public class FSL_activity extends AppCompatActivity implements RecognitionListener{
@@ -41,16 +48,17 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
     //    static private final int STATE_FILE = 3;
     static private final int STATE_MIC = 4;
 
-    private int STATE_NAME = -1;
+    private static int STATE_NAME;
 
     /* Used to handle permission request */
     private static final int PERMISSIONS_REQUEST_RECORD_AUDIO = 1;
-
     private Model model;
     private SpeechService speechService;
     private SpeechStreamService speechStreamService;
 //    private TextView resultView;
+    public static AppCompatActivity activity = null;
     public String result;
+    private static DialogFragment dialog;
 
 
 
@@ -61,12 +69,13 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
 
 
         configureBackButton();
+        configureTextField1();
+        configureTextField2();
 
         setUiState(STATE_START);
+        activity = this;
+        STATE_NAME = 0;
 
-//        findViewById(R.id.recognize_mic).setOnClickListener(view -> recognizeMicrophone());
-//        recognizeMicrophone();
-//        ((ToggleButton) findViewById(R.id.pause)).setOnCheckedChangeListener((view, isChecked) -> pause(isChecked));
 
         LibVosk.setLogLevel(LogLevel.INFO);
 
@@ -131,17 +140,8 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
         }
         if ((result != null)) {
             switch (result){
-                case "назад":
-                    voiceBack();
-                    break;
-                case "имя":
-                    firstName();
-                    break;
-                case "фамилия":
-                    secondName();
-                    break;
-                case "отчество":
-                    lastName();
+                case "сохранить":
+                    voiceSave();
                     break;
                 case "вверх":
                     goUp(STATE_NAME);
@@ -149,7 +149,48 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
                 case "вниз":
                     goDown(STATE_NAME);
                     break;
+                case "отменить":
+                    callAlert();
+                    break;
             }
+        }
+        if (STATE_NAME == 1) {
+            if ((result != null)) {
+                String[] words = result.split("\\s");
+                if (words.length == 2) {
+                    System.out.println(words[1]);
+                    if ("значение".equals(words[0])) {
+                        fillRadio(words[1]);
+                    }
+                }
+            }
+
+        }
+        if (STATE_NAME == 2) {
+            if ((result != null)) {
+                String[] words = result.split("\\s");
+                if (words.length == 3) {
+                    if ("значение".equals(words[0])) {
+                        fillCheck(words[1], words[2]);
+                    }
+                }
+            }
+
+        }
+        if (STATE_NAME == 4) {
+            if ((result != null)) {
+                if (result.equals("да")){
+                    voiceExit();
+                }
+            }
+        }
+        if (STATE_NAME == 4) {
+            if ((result != null)) {
+                if (result.equals("нет")){
+                    voiceBackToForm();
+                }
+            }
+
         }
     }
 
@@ -173,6 +214,58 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
     @Override
     public void onTimeout() {
         setUiState(STATE_DONE);
+    }
+
+    private void fillRadio(String number){
+        switch (number){
+            case "один":
+                RadioButton r = findViewById(R.id.radioButton);
+                r.setChecked(true);
+                break;
+            case "два":
+                RadioButton r2 = findViewById(R.id.radioButton2);
+                r2.setChecked(true);
+                break;
+            case "три":
+                RadioButton r3 = findViewById(R.id.radioButton3);
+                r3.setChecked(true);
+                break;
+        }
+    }
+
+    private void fillCheck(String number, String answer){
+        System.out.println(number);
+        System.out.println(answer);
+        switch (number){
+            case "один":
+                System.out.println(1);
+                CheckBox c = findViewById(R.id.checkBox);
+                if (answer.equals("да")) {
+                    c.setChecked(true);
+                }
+                else if (answer.equals("нет")){
+                    c.setChecked(false);
+                }
+                break;
+            case "два":
+                CheckBox c2 = findViewById(R.id.checkBox2);
+                if (answer.equals("да")) {
+                    c2.setChecked(true);
+                }
+                else if (answer.equals("нет")){
+                    c2.setChecked(false);
+                }
+                break;
+            case "три":
+                CheckBox c3 = findViewById(R.id.checkBox3);
+                if (answer.equals("да")) {
+                    c3.setChecked(true);
+                }
+                else if (answer.equals("нет")){
+                    c3.setChecked(false);
+                }
+                break;
+        }
     }
 
     private void setUiState(int state) {
@@ -230,7 +323,13 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
         }
     }
 
-    private void voiceBack(){
+    public static void voiceExit(){
+//        STATE_NAME == 0;
+//        startActivity(new Intent(FSL_activity.this, VoskActivity.class));
+        activity.finish();
+    }
+
+    public void voiceSave(){
         finish();
 //                startActivity(new Intent(FSL_activity.this, VoskActivity.class));
 //                setUiState(STATE_DONE);
@@ -238,34 +337,52 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
 //                speechService = null;
     }
 
-    private void firstName(){
-        EditText firstName = (EditText) findViewById(R.id.first_name);
-        firstName.requestFocus();
+    public static void voiceBackToForm(){
+        STATE_NAME = 0;
+        dialog.dismiss();
+    }
+
+    private void textField1(){
+        findViewById(R.id.RadioButtonGroup).setBackgroundColor(Color.parseColor("#FFFFFF"));
+        EditText textField1 = findViewById(R.id.text_filed1);
+        textField1.requestFocus();
         STATE_NAME = 0;
     }
 
-    private void secondName(){
-        EditText secondName = (EditText) findViewById(R.id.second_name);
-        secondName.requestFocus();
+    private void textField2(){
+        findViewById(R.id.checkBoxLayout).setBackgroundColor(Color.parseColor("#FFFFFF"));
+        EditText firstName = findViewById(R.id.text_filed2);
+        firstName.requestFocus();
+        STATE_NAME = 3;
+    }
+
+    private void radioField(){
+        findViewById(R.id.text_filed1).clearFocus();
+        findViewById(R.id.checkBoxLayout).setBackgroundColor(Color.parseColor("#FFFFFF"));
+        findViewById(R.id.RadioButtonGroup).setBackgroundColor(Color.parseColor("#F0F8FF"));
         STATE_NAME = 1;
     }
 
-    private void lastName(){
-        EditText lastName = (EditText) findViewById(R.id.last_name);
-        lastName.requestFocus();
+    private void checkField(){
+        findViewById(R.id.text_filed2).clearFocus();
+        findViewById(R.id.RadioButtonGroup).setBackgroundColor(Color.parseColor("#FFFFFF"));
+        findViewById(R.id.checkBoxLayout).setBackgroundColor(Color.parseColor("#F0F8FF"));
         STATE_NAME = 2;
     }
 
     private void goUp(int state){
         switch (state){
-            case 1:
-                firstName();
+            case 3:
+                checkField();
                 break;
             case 2:
-                secondName();
+                radioField();
+                break;
+            case 1:
+                textField1();
                 break;
             case 0:
-            case -1:
+                textField2();
                 break;
         }
     }
@@ -273,20 +390,67 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
     private void goDown(int state){
         switch (state){
             case 0:
-                secondName();
+                radioField();
                 break;
             case 1:
-                lastName();
+                checkField();
                 break;
             case 2:
-            case -1:
+                textField2();
+                break;
+            case 3:
+                textField1();
                 break;
         }
     }
 
+    private void callAlert(){
+        STATE_NAME = 4;
+        FragmentManager manager = getSupportFragmentManager();
+        dialog = new MyDialogFragment();
+        dialog.show(manager, "myDialog");
+    }
+
     protected void configureBackButton() {
         Button backButton = findViewById(R.id.backMain);
-        backButton.setOnClickListener(view -> finish());
+        backButton.setOnClickListener(view -> callAlert());
     }
+
+    protected void configureTextField1(){
+        findViewById(R.id.text_filed1).requestFocus();
+        findViewById(R.id.text_filed2).setOnClickListener(view -> textField1Behaviour());
+    }
+
+    private void textField1Behaviour(){
+        STATE_NAME = 0;
+    }
+
+    protected void configureTextField2(){
+        findViewById(R.id.text_filed2).setOnClickListener(view -> textField2Behaviour());
+    }
+
+    private void textField2Behaviour(){
+        STATE_NAME = 3;
+    }
+
+    public static class MyDialogFragment extends AppCompatDialogFragment {
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            String title = "Вы уверены что хоите выйти без сохранения?";
+            String button1String = "Да";
+            String button2String = "Нет";
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(title);  // заголовок
+//            builder.setMessage(message); // сообщение
+            builder.setPositiveButton(button1String, (dialog, id) -> voiceExit());
+            builder.setNegativeButton(button2String, (dialog, id) -> voiceBackToForm());
+            builder.setCancelable(true);
+
+            return builder.create();
+        }
+    }
+
+
 
 }

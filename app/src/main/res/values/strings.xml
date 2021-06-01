@@ -15,16 +15,22 @@
     <string name="pause">Пауза</string>
     <string name="continueRecognition">Продолжить</string>
     <string name="form_button" />
-    <string name="first_name" />
-    <string name="second_name" />
-    <string name="first_name_text" />
-    <string name="second_name_text" />
-    <string name="last_name_text" />
-    <string name="last_name" />
+    <string name="text_field1" />
+    <string name="text_field2" />
+    <string name="RadioLayout" />
     <string name="Имя">Имя</string>
     <string name="Фамилия">Фамилия</string>
     <string name="Отчество">Отчество</string>
     <string name="Назад">Назад</string>
-    <string name="create_form">Создать форму</string>
+    <string name="form_name">Форма 1</string>
+    <string name="create_form_one">форма 1</string>
+    <string name="create_form_two">форма 2</string>
+    <string name="settings">настройки</string>
+    <string name="radiobutton1">RadioButton1</string>
+    <string name="radiobutton2">RadioButton2</string>
+    <string name="radiobutton3">RadioButton3</string>
+    <string name="checkbox">CheckBox</string>
+    <string name="checkbox2">CheckBox</string>
+    <string name="checkbox3">CheckBox</string>
 
 </resources>
