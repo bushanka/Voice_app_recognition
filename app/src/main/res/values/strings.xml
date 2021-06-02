@@ -32,10 +32,32 @@
     <string name="checkbox">CheckBox</string>
     <string name="checkbox2">CheckBox</string>
     <string name="checkbox3">CheckBox</string>
-    <string name="up_name">вверх</string>
-    <string name="up_field"/>
     <string name="voice_command_general">Голосовая команда</string>
     <string name="command_general">Команда</string>
+    <string name="up_name">вверх</string>
+    <string name="up_field"/>
+    <string name="down_name">вниз</string>
+    <string name="down_field"/>
+    <string name="left_name">влево</string>
+    <string name="left_field"/>
+    <string name="right_name">вправо</string>
+    <string name="right_field"/>
+    <string name="choice_name">выбор</string>
+    <string name="choice_field"/>
+    <string name="value_name">значение</string>
+    <string name="value_field"/>
+    <string name="save_name">сохранить</string>
+    <string name="save_field"/>
+    <string name="cancel_name">отменить</string>
+    <string name="cancel_field"/>
+    <string name="yes_name">да</string>
+    <string name="yes_field"/>
+    <string name="no_name">нет</string>
+    <string name="no_field"/>
+    <string name="print_name">печать</string>
+    <string name="print_field"/>
+
+    <string name="Approve">Принять</string>
 
 
 </resources>

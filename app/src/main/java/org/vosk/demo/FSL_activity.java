@@ -42,7 +42,6 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
     static private final int STATE_START = 0;
     static private final int STATE_READY = 1;
     static private final int STATE_DONE = 2;
-    //    static private final int STATE_FILE = 3;
     static private final int STATE_MIC = 4;
 
     private static int STATE_NAME;
@@ -52,22 +51,21 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
     private Model model;
     private SpeechService speechService;
     private SpeechStreamService speechStreamService;
-//    private TextView resultView;
     public static AppCompatActivity activity = null;
     public String result;
     private static DialogFragment dialog;
 
-    String up;
-    String down;
-    String left;
-    String right;
-    String choice;
-    String value;
-    String save;
-    String cancel;
-    String yes;
-    String no;
-    String print;
+    public static String up;
+    public static String down;
+    public static String left;
+    public static String right;
+    public static String choice;
+    public static String value;
+    public static String save;
+    public static String cancel;
+    public static String yes;
+    public static String no;
+    public static String print;
 
 
 
@@ -77,17 +75,22 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_f_s_l);
 
-        up = getIntent().getExtras().getString("up");
-        down = getIntent().getExtras().getString("down");
-        left = getIntent().getExtras().getString("left");
-        right = getIntent().getExtras().getString("right");
-        choice = getIntent().getExtras().getString("choice");
-        value = getIntent().getExtras().getString("value");
-        save = getIntent().getExtras().getString("save");
-        cancel = getIntent().getExtras().getString("cancel");
-        yes = getIntent().getExtras().getString("yes");
-        no = getIntent().getExtras().getString("no");
-        print = getIntent().getExtras().getString("print");
+
+        try {
+            up = getIntent().getExtras().getString("up");
+            down = getIntent().getExtras().getString("down");
+            left = getIntent().getExtras().getString("left");
+            right = getIntent().getExtras().getString("right");
+            choice = getIntent().getExtras().getString("choice");
+            value = getIntent().getExtras().getString("value");
+            save = getIntent().getExtras().getString("save");
+            cancel = getIntent().getExtras().getString("cancel");
+            yes = getIntent().getExtras().getString("yes");
+            no = getIntent().getExtras().getString("no");
+            print = getIntent().getExtras().getString("print");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         configureBackButton();
@@ -157,7 +160,7 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
             Object obj = new JSONParser().parse(hypothesis);
             JSONObject jo = (JSONObject) obj;
             result = (String) jo.get("text");
-            System.out.println(result + '\n');
+//            System.out.println(result + '\n');
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -175,7 +178,6 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
             if ((result != null)) {
                 String[] words = result.split("\\s");
                 if (words.length == 2) {
-                    System.out.println(words[1]);
                     if (value.equals(words[0])) { // ЗНАЧЕНИЕ
                         fillRadio(words[1]);
                     }
@@ -251,11 +253,8 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
     }
 
     private void fillCheck(String number, String answer){
-        System.out.println(number);
-        System.out.println(answer);
         switch (number){
             case "один":
-                System.out.println(1);
                 CheckBox c = findViewById(R.id.checkBox);
                 if (answer.equals(yes)) {     //ДА
                     c.setChecked(true);

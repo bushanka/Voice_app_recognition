@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,6 +13,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -26,8 +30,6 @@ import org.vosk.android.SpeechStreamService;
 import org.vosk.android.StorageService;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class VoskActivity extends Activity implements
         RecognitionListener {
@@ -46,36 +48,25 @@ public class VoskActivity extends Activity implements
     private SpeechStreamService speechStreamService;
     public String result;
 
-    String up;
-    String down;
-    String left;
-    String right;
-    String choice;
-    String value;
-    String save;
-    String cancel;
-    String yes;
-    String no;
-    String print;
+    public static String up;
+    public static String down;
+    public static String left;
+    public static String right;
+    public static String choice;
+    public static String value;
+    public static String save;
+    public static String cancel;
+    public static String yes;
+    public static String no;
+    public static String print;
+
 
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.main);
 
-        up = getIntent().getExtras().getString("up");
-        down = getIntent().getExtras().getString("down");
-        left = getIntent().getExtras().getString("left");
-        right = getIntent().getExtras().getString("right");
-        choice = getIntent().getExtras().getString("choice");
-        value = getIntent().getExtras().getString("value");
-        save = getIntent().getExtras().getString("save");
-        cancel = getIntent().getExtras().getString("cancel");
-        yes = getIntent().getExtras().getString("yes");
-        no = getIntent().getExtras().getString("no");
-        print = getIntent().getExtras().getString("print");
-
-        if (up.length() == 0 | down.length() == 0){
+        if (up == null) {
             up = "вверх";
             down = "вниз";
             left = "влево";
@@ -87,24 +78,7 @@ public class VoskActivity extends Activity implements
             yes = "да";
             no = "нет";
             print = "печать";
-
         }
-
-//        Команды навигации по формам:
-//                - Вверх
-//                - Вниз
-//                - Влево
-//                - Вправо
-//                - Выбор
-//                - Значение
-//
-//        Общие команды:
-//                - Сохранить
-//                - Отменить
-//                - Да
-//                - Нет
-//                - Печать
-
 
         configureFormOneButton();
         createFormOne();
@@ -129,6 +103,8 @@ public class VoskActivity extends Activity implements
             initModel();
         }
     }
+
+
 
     private void initModel() {
         StorageService.unpack(this, "model-ru", "model",
@@ -320,3 +296,4 @@ public class VoskActivity extends Activity implements
     }
 
 }
+
