@@ -5,17 +5,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.method.ScrollingMovementMethod;
+
 import android.widget.Button;
-import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.OnLifecycleEvent;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -37,7 +33,6 @@ public class VoskActivity extends Activity implements
     static private final int STATE_START = 0;
     static private final int STATE_READY = 1;
     static private final int STATE_DONE = 2;
-//    static private final int STATE_FILE = 3;
     static private final int STATE_MIC = 4;
 
     /* Used to handle permission request */
@@ -90,13 +85,6 @@ public class VoskActivity extends Activity implements
         }
 
 
-        // Setup layout
-        // Setup layout
-        setUiState(STATE_START);
-
-//        findViewById(R.id.recognize_mic).setOnClickListener(view -> recognizeMicrophone());
-//        recognizeMicrophone();
-//        ((ToggleButton) findViewById(R.id.pause)).setOnCheckedChangeListener((view, isChecked) -> pause(isChecked));
 
         LibVosk.setLogLevel(LogLevel.INFO);
 
@@ -157,7 +145,7 @@ public class VoskActivity extends Activity implements
             Object obj = new JSONParser().parse(hypothesis);
             JSONObject jo = (JSONObject) obj;
             result = (String) jo.get("text");
-            System.out.println(result + '\n');
+//            System.out.println(result + '\n');
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -220,6 +208,7 @@ public class VoskActivity extends Activity implements
     }
 
     private void setErrorState(String message) {
+        System.out.println(message);
     }
 
 
@@ -339,12 +328,6 @@ public class VoskActivity extends Activity implements
                 intent.putExtra("form_name", "2");
                 startActivity(intent);
             }
-    }
-
-    private void pause(boolean checked) {
-        if (speechService != null) {
-            speechService.setPause(checked);
-        }
     }
 
 }
