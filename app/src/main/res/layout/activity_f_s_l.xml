@@ -98,7 +98,7 @@
         android:layout_marginTop="42dp"
         android:autofillHints=""
         android:background="@drawable/edittextstyle"
-        android:inputType="text"
+        android:inputType="textMultiLine"
         android:lines="4"
         android:text="@string/text_field2"
         android:textSize="14sp"

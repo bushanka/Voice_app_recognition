@@ -66,6 +66,15 @@ public class VoskActivity extends Activity implements
         super.onCreate(state);
         setContentView(R.layout.main);
 
+        Button settingsBtn = findViewById(R.id.settings);
+        settingsBtn.setOnClickListener(view -> configureSettings());
+
+        Button formOneButton = findViewById(R.id.createFormOne);
+        formOneButton.setOnClickListener(view -> configureFormOneButton());
+
+        Button formTwoButton = findViewById(R.id.createFormTwo);
+        formTwoButton.setOnClickListener(view -> configureFormTwoButton());
+
         if (up == null) {
             up = "вверх";
             down = "вниз";
@@ -80,10 +89,6 @@ public class VoskActivity extends Activity implements
             print = "печать";
         }
 
-        configureFormOneButton();
-        createFormOne();
-        createFormTwo();
-        configureSettings();
 
         // Setup layout
         // Setup layout
@@ -157,6 +162,7 @@ public class VoskActivity extends Activity implements
             e.printStackTrace();
         }
         createFormOne();
+        createFormTwo();
     }
 
     @Override
@@ -237,13 +243,57 @@ public class VoskActivity extends Activity implements
 
 
     private void configureFormOneButton() {
-        Button formOneButton = findViewById(R.id.createFormOne);
-        formOneButton.setOnClickListener(view -> startActivity(new Intent(VoskActivity.this, FSL_activity.class)));
+
+        Intent intent = new Intent(VoskActivity.this, FSL_activity.class);
+        intent.putExtra("up", up);
+        intent.putExtra("down", down);
+        intent.putExtra("left", left);
+        intent.putExtra("right", right);
+        intent.putExtra("choice", choice);
+        intent.putExtra("yes", yes);
+        intent.putExtra("no", no);
+        intent.putExtra("print", print);
+        intent.putExtra("save", save);
+        intent.putExtra("value", value);
+        intent.putExtra("cancel", cancel);
+        intent.putExtra("form_name", "1");
+        startActivity(intent);
+
+    }
+
+    private void configureFormTwoButton() {
+
+        Intent intent = new Intent(VoskActivity.this, FSL_activity.class);
+        intent.putExtra("up", up);
+        intent.putExtra("down", down);
+        intent.putExtra("left", left);
+        intent.putExtra("right", right);
+        intent.putExtra("choice", choice);
+        intent.putExtra("yes", yes);
+        intent.putExtra("no", no);
+        intent.putExtra("print", print);
+        intent.putExtra("save", save);
+        intent.putExtra("value", value);
+        intent.putExtra("cancel", cancel);
+        intent.putExtra("form_name", "2");
+        startActivity(intent);
+
     }
 
     private void configureSettings(){
-        Button settingsBtn = findViewById(R.id.settings);
-        settingsBtn.setOnClickListener(view -> startActivity(new Intent(VoskActivity.this, Settings.class)));
+        Intent intent = new Intent(VoskActivity.this, Settings.class);
+        intent.putExtra("up", up);
+        intent.putExtra("down", down);
+        intent.putExtra("left", left);
+        intent.putExtra("right", right);
+        intent.putExtra("choice", choice);
+        intent.putExtra("yes", yes);
+        intent.putExtra("no", no);
+        intent.putExtra("print", print);
+        intent.putExtra("save", save);
+        intent.putExtra("value", value);
+        intent.putExtra("cancel", cancel);
+        startActivity(intent);
     }
 
     private void createFormOne() {
@@ -261,6 +311,7 @@ public class VoskActivity extends Activity implements
                 intent.putExtra("save", save);
                 intent.putExtra("value", value);
                 intent.putExtra("cancel", cancel);
+                intent.putExtra("form_name", "1");
                 startActivity(intent);
 
 //                setUiState(STATE_DONE);
@@ -285,6 +336,7 @@ public class VoskActivity extends Activity implements
                 intent.putExtra("save", save);
                 intent.putExtra("value", value);
                 intent.putExtra("cancel", cancel);
+                intent.putExtra("form_name", "2");
                 startActivity(intent);
             }
     }

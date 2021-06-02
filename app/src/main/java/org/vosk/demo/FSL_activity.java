@@ -1,15 +1,19 @@
 package org.vosk.demo;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.Button;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDialogFragment;
@@ -66,10 +70,12 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
     public static String yes;
     public static String no;
     public static String print;
+    public static String form_num;
 
 
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,14 +94,23 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
             yes = getIntent().getExtras().getString("yes");
             no = getIntent().getExtras().getString("no");
             print = getIntent().getExtras().getString("print");
+            form_num = getIntent().getExtras().getString("form_name");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        EditText editText = findViewById(R.id.text_filed2);
+
+        editText.addTextChangedListener(new EditTextLinesLimiter(editText, 4));
 
 
         configureBackButton();
         configureTextField1();
         configureTextField2();
+
+        TextView name = findViewById(R.id.first_name_text);
+        name.setText("Форма "+form_num);
 
 
         setUiState(STATE_START);
@@ -251,6 +266,7 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
                 break;
         }
     }
+
 
     private void fillCheck(String number, String answer){
         switch (number){
@@ -468,5 +484,37 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
     }
 
 
+    public static class EditTextLinesLimiter implements TextWatcher {
+        private final EditText editText;
+        private final int maxLines;
+        private String lastValue = "";
+
+        public EditTextLinesLimiter(EditText editText, int maxLines) {
+            this.editText = editText;
+            this.maxLines = maxLines;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            lastValue = charSequence.toString();
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            if (editText.getLineCount() > maxLines) {
+                int selectionStart = editText.getSelectionStart() - 1;
+                editText.setText(lastValue);
+                if (selectionStart >= editText.length()) {
+                    selectionStart = editText.length();
+                }
+                editText.setSelection(selectionStart);
+            }
+        }
+    }
 
 }
