@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -450,19 +451,30 @@ public class FSL_activity extends AppCompatActivity implements RecognitionListen
 
     protected void configureTextField1(){
         findViewById(R.id.text_filed1).requestFocus();
-        findViewById(R.id.text_filed2).setOnClickListener(view -> textField1Behaviour());
+        findViewById(R.id.text_filed1).setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus)
+                textField1Behaviour();
+        });
     }
 
     private void textField1Behaviour(){
         STATE_NAME = 0;
+        findViewById(R.id.checkBoxLayout).setBackgroundColor(Color.parseColor("#FFFFFF"));
+        findViewById(R.id.RadioButtonGroup).setBackgroundColor(Color.parseColor("#FFFFFF"));
     }
 
     protected void configureTextField2(){
-        findViewById(R.id.text_filed2).setOnClickListener(view -> textField2Behaviour());
+        findViewById(R.id.text_filed2).setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus)
+                textField2Behaviour();
+        });
     }
 
     private void textField2Behaviour(){
+        findViewById(R.id.text_filed2).requestFocus();
         STATE_NAME = 3;
+        findViewById(R.id.checkBoxLayout).setBackgroundColor(Color.parseColor("#FFFFFF"));
+        findViewById(R.id.RadioButtonGroup).setBackgroundColor(Color.parseColor("#FFFFFF"));
     }
 
     public static class MyDialogFragment extends AppCompatDialogFragment {
